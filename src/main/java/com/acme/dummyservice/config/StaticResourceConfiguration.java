@@ -1,7 +1,6 @@
 package com.acme.dummyservice.config;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
@@ -22,12 +21,6 @@ public class StaticResourceConfiguration implements WebMvcConfigurer
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/ui").setViewName("forward:/ui/index.html");
-//        registry.addViewController("/{spring:\\b(?!(?:ui)\\b)\\w+}")
-//                .setViewName("forward:/");
-//        registry.addViewController("/**/{spring:\\b(?!(?:ui)\\b)\\w+}")
-//                .setViewName("forward:/");
-//        registry.addViewController("/{spring:\\b(?!(?:ui)\\b)\\w+}/**{spring:?!(\\.js|\\.css)$}")
-//                .setViewName("forward:/");
     }
 
     @Override

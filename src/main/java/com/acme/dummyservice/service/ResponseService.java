@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 public class ResponseService {
-    public ResponseDTO buildIndexResponse(String path, ResponseDTO response, List<ResponseDTO> upstreamResponses, List<String> iPv4Addresses, Date startTime ) {
+    public ResponseDTO buildIndexResponse(String path, ResponseDTO response, List<ResponseDTO> upstreamResponses, List<String> iPv4Addresses, Date startTime) {
         if(upstreamResponses!=null && !upstreamResponses.isEmpty()){
             response.setUpstreamCalls(upstreamResponses);
         }

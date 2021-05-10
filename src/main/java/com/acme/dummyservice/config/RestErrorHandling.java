@@ -1,6 +1,7 @@
 package com.acme.dummyservice.config;
 
 import com.acme.dummyservice.dto.ErrorDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +20,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
+@Slf4j
 public class RestErrorHandling extends ResponseEntityExceptionHandler {
 
     /**
@@ -45,21 +47,13 @@ public class RestErrorHandling extends ResponseEntityExceptionHandler {
      * @param ex the Exception
      * @return the ApiError object
      */
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler({RuntimeException.class, Throwable.class, Exception.class})
     protected ResponseEntity<Object> handleRuntimeException(RuntimeException ex,
                                                                       WebRequest request) {
         ErrorDTO errorDTO = new ErrorDTO(INTERNAL_SERVER_ERROR);
         errorDTO.setMessage("An unexpected error occurred trying to serve your request.");
         errorDTO.setDebugMessage(ex.getMessage());
-        return buildResponseEntity(errorDTO);
-    }
-
-    @ExceptionHandler(Exception.class)
-    protected ResponseEntity<Object> handleGenericException(Exception ex,
-                                                            WebRequest request) {
-        ErrorDTO errorDTO = new ErrorDTO(INTERNAL_SERVER_ERROR);
-        errorDTO.setMessage("An unexpected error occurred trying to serve your request.");
-        errorDTO.setDebugMessage(ex.getMessage());
+        log.error(ex.getMessage());
         return buildResponseEntity(errorDTO);
     }
 
