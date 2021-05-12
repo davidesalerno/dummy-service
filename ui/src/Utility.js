@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import axios from 'axios';
 
 /**
  * @description
@@ -29,8 +30,7 @@ export const useDataApi = () => {
     // this useEffect will run once
     // similar to componentDidMount()
     useEffect(() => {
-        fetch(url)
-            .then(res => res.json())
+        getDataApi(url)
             .then(
                 (result) => {
                     setLoaded(true);
@@ -77,4 +77,18 @@ export const groupBy = (list, keyGetter) => {
         }
     });
     return map;
+}
+
+/**
+ * @description
+ * Takes an url of a REST API and it tries to retrieve data from that
+ * and returns a promise for the result.
+ *
+ * @param string An url string.
+ *
+ * @returns Promise A promise that will give the data retrieved from the HTTP GET
+ */
+export const getDataApi = (url) => {
+    return axios.get(url)
+        .then(res => res.data);
 }

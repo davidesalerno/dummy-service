@@ -12,15 +12,16 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-
-    console.log(process.env.REACT_APP_API_URI);
     var baseUrl = (process.env.REACT_APP_API_URI) ? "" + process.env.REACT_APP_API_URI : "http://localhost:8080";
+    var serviceName = (process.env.REACT_SERVICE_NAME) ? "" + process.env.REACT_SERVICE_NAME : "Dummy Service";
     console.log("API_URI: " + baseUrl);
+    console.log("SERVICE NAME: " + serviceName);
 
-    this.state = {
+      this.state = {
       baseUrl: baseUrl,
       url: baseUrl,
-      refresh: new Date().getMilliseconds()
+      refresh: new Date().getMilliseconds(),
+      serviceName: serviceName
     };
   }
 
@@ -30,7 +31,7 @@ class App extends React.Component {
         <div className="App">
             <BrowserRouter basename="/ui">
             <Navbar bg="dark" variant="dark" sticky="top">
-                <Navbar.Brand><h1>Dummy Service UI</h1></Navbar.Brand><Navbar.Toggle aria-controls="basic-navbar-nav"/>
+                <Navbar.Brand><h1>{this.state.serviceName} UI</h1></Navbar.Brand><Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
                         <Nav.Link as={Link} to="/">Home</Nav.Link>

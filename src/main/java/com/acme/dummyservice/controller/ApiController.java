@@ -10,16 +10,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.SocketException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Enumeration;
-import java.util.List;
 
 @RestController
 public class ApiController {
@@ -29,7 +24,7 @@ public class ApiController {
     private final ResponseService responseService;
     private String name;
     private String message;
-    private String upstreamServices;
+    private String upstreamUris;
 
     public ApiController(ResponseService responseService, UpstreamsService upstreamServices, NetworkService networkService){
         this.responseService = responseService;
@@ -47,9 +42,9 @@ public class ApiController {
         this.message = message;
     }
 
-    @Value("${upstreams.calls:#{null}}")
-    public void setUpstreamServices(String upstreamServices){
-        this.upstreamServices = upstreamServices;
+    @Value("${upstreams.uris:#{null}}")
+    public void setUpstreamUris(String upstreamUris){
+        this.upstreamUris = upstreamUris;
     }
 
     @Operation(summary = "Get a response from Dummy Service")
@@ -61,7 +56,7 @@ public class ApiController {
                     content = @Content) })
     @RequestMapping(value = {"/", "/{spring:\\b(?!(?:ui)\\b)\\w+}","/**/{spring:\\b(?!(?:ui)\\b)\\w+}","/{spring:\\b(?!(?:ui)\\b)\\w+}/**{spring:?!(\\.js|\\.css)$}"})
     public ResponseDTO index(@RequestParam(name = "bulk", required = false, defaultValue = "1") Integer bulkCalls, HttpServletRequest request) throws SocketException {
-        return responseService.buildIndexResponse(request.getRequestURI().substring(request.getContextPath().length()), ResponseDTO.builder().name(this.name).body(this.message).build(), upstreamService.call(upstreamServices, bulkCalls), networkService.getIPv4Addresses(), new Date());
+        return responseService.buildIndexResponse(request.getRequestURI().substring(request.getContextPath().length()), ResponseDTO.builder().name(this.name).body(this.message).build(), upstreamService.call(upstreamUris, bulkCalls), networkService.getIPv4Addresses(), new Date());
     }
 
 }

@@ -34,6 +34,8 @@ public class ApiControllerIntegrationTest {
     @SneakyThrows
     @Test
     public void callToIndexShouldProvideAResponse(){
+        wireMockHelper.stubGetWithResource("/up1", "/test-data/upstream1.json");
+        wireMockHelper.stubGetWithResource("/up2", "/test-data/upstream1.json");
         given().when().get("http://localhost:38080/")
                 .then()
                 .statusCode(200)

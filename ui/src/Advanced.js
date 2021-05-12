@@ -10,7 +10,7 @@ import {useDataApi} from "./Utility";
 export default function Advanced(props) {
     const [bulk, setBulk] = useState(5);
     const [{ data, loaded, error }, doFetch, url] = useDataApi();
-    const baseApiUrl = props.url ? props.url : 'https://run.mocky.io/v3/42b5958e-58d2-4647-8f80-a02a085a478e';
+    const baseApiUrl = props.url;
 
     function handleBulkChange(e) {
         setBulk(e.target.value);

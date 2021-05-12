@@ -88,6 +88,12 @@
             <version>2.27.2</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/au.com.dius.pact.provider/junit5spring -->
+        <dependency>
+            <groupId>au.com.dius.pact.provider</groupId>
+            <artifactId>junit5spring</artifactId>
+            <version>4.2.5</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -127,7 +133,6 @@
                             <goal>install-node-and-yarn</goal>
                         </goals>
                     </execution>
-
                     <execution>
                         <id>yarn install</id>
                         <goals>
@@ -137,7 +142,24 @@
                             <arguments>install</arguments>
                         </configuration>
                     </execution>
-
+                    <execution>
+                        <id>run tests</id>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>test</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>run contract tests</id>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>test:pact</arguments>
+                        </configuration>
+                    </execution>
                     <execution>
                         <id>yarn build</id>
                         <goals>

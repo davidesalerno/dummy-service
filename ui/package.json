@@ -4,9 +4,7 @@
   "private": true,
   "dependencies": {
     "@mrblenny/react-flow-chart": "^0.0.14",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
+    "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
@@ -19,8 +17,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "cross-env CI=true react-scripts test --testTimeout 30000 --runInBand --testMatch \"**/*.test.js\"",
+    "eject": "react-scripts eject",
+    "test:pact": "cross-env CI=true react-scripts test --testTimeout 30000 --runInBand --setupFiles ./pact/setup.js --setupFilesAfterEnv ./pact/jest-wrapper.js --testMatch \"**/*.test.pact.js\" --passWithNoTests",
+    "publish:pact": "pact-broker publish ./pacts --consumer-app-version=1.0.0 --broker-base-url=$PACT_BROKER_URL --broker-token=$PACT_BROKER_TOKEN"
   },
   "eslintConfig": {
     "extends": [
@@ -39,5 +39,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@pact-foundation/pact": "^9.15.5",
+    "@pact-foundation/pact-node": "^10.12.2",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/react-hooks": "^5.1.2",
+    "@testing-library/user-event": "^12.1.10",
+    "cross-env": "^7.0.3"
   }
 }
