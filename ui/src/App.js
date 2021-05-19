@@ -1,56 +1,76 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import './Chart.js'
 import Timeline from './Chart.js';
 import Advanced from './Advanced.js';
 import { BrowserRouter, Route, Switch, Link} from 'react-router-dom';
+import {getDataApi} from "./Utility";
+import { css } from "@emotion/core";
+import ClipLoader from "react-spinners/ClipLoader";
 
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 
-class App extends React.Component {
+export default function App(props){
+    const [url] = useState((process.env.REACT_APP_API_URI) ? "" + process.env.REACT_APP_API_URI : "http://localhost:8080");
+    const [name, setName] = useState((process.env.REACT_SERVICE_NAME) ? "" + process.env.REACT_SERVICE_NAME : "Dummy Service");
+    const [refresh]= useState(new Date().getMilliseconds());
+    const [loading, setLoading]= useState(true);
 
-  constructor(props) {
-    super(props);
-    var baseUrl = (process.env.REACT_APP_API_URI) ? "" + process.env.REACT_APP_API_URI : "http://localhost:8080";
-    var serviceName = (process.env.REACT_SERVICE_NAME) ? "" + process.env.REACT_SERVICE_NAME : "Dummy Service";
-    console.log("API_URI: " + baseUrl);
-    console.log("SERVICE NAME: " + serviceName);
+    const override = css`
+      display: block;
+      margin: 20% auto;
+      border-color: #343a40;
+      border-width: 10px;
+    `;
 
-      this.state = {
-      baseUrl: baseUrl,
-      url: baseUrl,
-      refresh: new Date().getMilliseconds(),
-      serviceName: serviceName
-    };
-  }
+    console.log("API_URI: " + url);
+    console.log("SERVICE NAME: " + name);
 
-
-  render() {
+    useEffect(() => {
+        let mounted = true
+        getDataApi(url)
+            .then(
+                (result) => {
+                    if(mounted){
+                        setName(result.name);
+                        setLoading(false);
+                    }
+                },
+                (error) => {
+                    if(mounted){
+                        setLoading(false);
+                        console.log(error);
+                    }
+                }
+            )
+        return function cleanup() {
+            mounted = false
+        }
+    }, [url]);
     return (
-        <div className="App">
-            <BrowserRouter basename="/ui">
-            <Navbar bg="dark" variant="dark" sticky="top">
-                <Navbar.Brand><h1>{this.state.serviceName} UI</h1></Navbar.Brand><Navbar.Toggle aria-controls="basic-navbar-nav"/>
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="mr-auto">
-                        <Nav.Link as={Link} to="/">Home</Nav.Link>
-                        <Nav.Link as={Link} to="/advanced">Advanced</Nav.Link>
-                    </Nav>
-                </Navbar.Collapse>
-            </Navbar>
-                <Switch>
-                    <Route exact path="/">
-                        <Timeline url={this.state.url} refresh={this.state.refresh}/>
-                    </Route>
-                    <Route path="/advanced">
-                        <Advanced url={this.state.url}/>
-                    </Route>
-                </Switch>
-            </BrowserRouter>
-        </div>
-    );
-  }
-}
+        (loading) ? <ClipLoader loading={loading} size={150} css={override} /> :
+            <div className="App">
+                <BrowserRouter basename="/ui">
+                    <Navbar bg="dark" variant="dark" sticky="top">
+                        <Navbar.Brand><h1>{name} UI</h1></Navbar.Brand><Navbar.Toggle aria-controls="basic-navbar-nav"/>
+                        <Navbar.Collapse id="basic-navbar-nav">
+                            <Nav className="mr-auto">
+                                <Nav.Link as={Link} to="/">Home</Nav.Link>
+                                <Nav.Link as={Link} to="/advanced">Advanced</Nav.Link>
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Navbar>
+                    <Switch>
+                        <Route exact path="/">
+                            <Timeline url={url} refresh={refresh}/>
+                        </Route>
+                        <Route path="/advanced">
+                            <Advanced url={url}/>
+                        </Route>
+                    </Switch>
+                </BrowserRouter>
+            </div>
 
-export default App;
+        );
+};

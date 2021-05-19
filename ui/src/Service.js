@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 export default function Service(props) {
     const {name, calls} = props;
     const listUpstreams = calls.map((upstream, index) =>
-        <tr>
+        <tr key={upstream.name+"-"+index}>
             <td>{index}</td>
             <td>{upstream.name}</td>
             <td>{upstream.body}</td>
