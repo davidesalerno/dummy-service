@@ -26,6 +26,8 @@ Environment variables:
         IP address the service is listening to
     UPSTREAM_URIS  default: no default
         Comma separated URIs of the upstream services to call
+    TIMING_WAIT_BEFORE_RESPONSE  default: -1L
+        Long value that represents the numers of ms that the api waits before sending the response
 ```
 
 N.B This service is developed using Spring and in particular Spring Boot, so you can refer to the [official framework documentation](https://docs.spring.io/spring-boot/docs/2.4.5/reference/html/appendix-application-properties.html#common-application-properties) for the additional environment variables not reported above.

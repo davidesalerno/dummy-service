@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
-import './Chart.js'
-import Timeline from './Chart.js';
+import Timeline from './Timeline.js';
 import Advanced from './Advanced.js';
 import { BrowserRouter, Route, Switch, Link} from 'react-router-dom';
 import {getDataApi} from "./Utility";
@@ -48,6 +47,7 @@ export default function App(props){
             mounted = false
         }
     }, [url]);
+
     return (
         (loading) ? <ClipLoader loading={loading} size={150} css={override} /> :
             <div className="App">

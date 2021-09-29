@@ -1,13 +1,14 @@
 import { FlowChartWithState } from "@mrblenny/react-flow-chart";
-import React from 'react'
-import { processData } from './Data'
+import React, {useEffect, useState} from 'react';
+import { processData } from './Data';
 
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import {getDataApi} from "./Utility";
 
-const NodeInnerCustom = ({ node, children, ...otherProps }) => {
-    var className = "node";
+function NodeInnerCustom({ node, children, ...otherProps }){
+    let className = "node";
 
     if (node.properties.response !== 200 && node.properties.response !== 0) {
         className = "node-error";
@@ -60,53 +61,40 @@ const NodeInnerCustom = ({ node, children, ...otherProps }) => {
     )
 }
 
-class Timeline extends React.Component {
+export default function Timeline(props){
 
-    constructor(props) {
-        super(props);
+    const [url] = useState(props.url);
+    const [refresh] = useState(props.refresh);
+    const [loaded, setLoaded] = useState(false);
+    const [data, setData] = useState();
 
-        this.state = {
-            url: this.props.url,
-            refresh: this.props.refresh,
-            loaded: false,
-        };
-    }
-
-    componentWillMount() {
-        this.fetchData(this.state.url);
-    }
-
-    componentWillReceiveProps(props) {
-        if (props.refresh !== undefined && props.refresh !== this.state.refresh) {
-            console.log("Reload data", props.url, props.refresh);
-            this.setState({ url: props.url, loaded: false, refresh: props.refresh });
-            this.fetchData(props.url);
-        }
-    }
-
-    fetchData(url) {
-        fetch(url)
-            .then(res => res.json())
+    useEffect(() => {
+        let mounted = true
+        getDataApi(url)
             .then(
                 (result) => {
-                    console.log("response from API:", result);
-                    var data = processData(result);
-
-                    this.setState({ "data": data, loaded: true });
+                    if(mounted){
+                        console.log("response from API:", result);
+                        setData(processData(result));
+                        setLoaded(true);
+                    }
                 },
                 (error) => {
-                    console.error("error processing API", error);
+                    if(mounted){
+                        setLoaded(false);
+                        console.log(error);
+                    }
                 }
-            );
-    }
-
-    render() {
-        if (this.state.loaded === true) {
-            return <FlowChartWithState initialValue={this.state.data} Components={{ NodeInner: NodeInnerCustom }} />
+            )
+        return function cleanup() {
+            mounted = false
         }
+    }, [url,refresh]);
 
-        return null
+    if (loaded === true) {
+        return <FlowChartWithState initialValue={data} Components={{ NodeInner: NodeInnerCustom }} />
     }
-}
 
-export default Timeline
+    return null;
+
+}

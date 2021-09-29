@@ -11,8 +11,9 @@ export default function ListServices(props) {
         const listServices = [];
         groupedServices.forEach((value, key) => {
             console.log(value, key);
-            listServices.push(<Service name={key} calls={value}/>);
+            listServices.push(<Service key={key} name={key} calls={value}/>);
         })
+        console.log(listServices);
         return <Container>{listServices}</Container>;
     }
     return <Container>No upstream service to show :-(</Container>;

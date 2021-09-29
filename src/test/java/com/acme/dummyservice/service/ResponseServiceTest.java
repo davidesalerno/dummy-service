@@ -22,4 +22,16 @@ class ResponseServiceTest {
         assertThat(response.getBody()).isEqualTo("Hello Test!");
         assertThat(response.getUri()).isEqualTo("/");
     }
+
+    @SneakyThrows
+    @Test
+    public void givenAValidRequestShouldResponseAfterTheSleep(){
+        long timeToSleep = 15000L;
+        serviceUnderTest.setWaitForBeforeResponseMs(timeToSleep);
+        long start = System.currentTimeMillis();
+        serviceUnderTest.buildIndexResponse("/", ResponseDTO.builder().name("Dummy Service under Test").body("Hello Test!").build(), null, Arrays.asList("127.0.0.0"), new Date());
+        long end = System.currentTimeMillis();
+        assertThat(end-start).isGreaterThanOrEqualTo(timeToSleep);
+        serviceUnderTest.setWaitForBeforeResponseMs(-1L);
+    }
 }
