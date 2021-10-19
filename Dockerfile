@@ -6,7 +6,6 @@ COPY src /workspace/src
 COPY ui /workspace/ui
 RUN mvn -B -f pom.xml clean package -DskipTests
 
-FROM openjdk:11-jdk-slim
+FROM adoptopenjdk:11-jre-hotspot
 COPY --from=build /workspace/target/*.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java", "-XX:+UseSerialGC","-Xmx32m","-Xss256k","-XX:MaxRAM=64m","-jar","app.jar"]
