@@ -54,7 +54,7 @@ public class ApiController {
                             schema = @Schema(implementation = ResponseDTO.class)) }),
             @ApiResponse(responseCode = "400", description = "Invalid input supplied",
                     content = @Content) })
-    @RequestMapping(value = {"/", "/{spring:\\b(?!(?:ui)\\b)\\w+}","/**/{spring:\\b(?!(?:ui)\\b)\\w+}","/{spring:\\b(?!(?:ui)\\b)\\w+}/**{spring:?!(\\.js|\\.css)$}"})
+    @RequestMapping(value = {"/", "/{spring:\\b(?!(?:ui)\\b)\\w+}"})
     public ResponseDTO index(@RequestParam(name = "bulk", required = false, defaultValue = "1") Integer bulkCalls, HttpServletRequest request) throws SocketException {
         return responseService.buildIndexResponse(request.getRequestURI().substring(request.getContextPath().length()), ResponseDTO.builder().name(this.name).body(this.message).build(), upstreamService.call(upstreamUris, bulkCalls), networkService.getIPv4Addresses(), new Date());
     }

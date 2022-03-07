@@ -56,7 +56,7 @@ public class ApiControllerIntegrationTest {
                 .body("uri",equalTo("/"))
                 .body("type", equalTo("HTTP"))
                 .body("$", hasKey("upstream_calls") )
-                .body("upstream_calls.size", equalTo(2) );
+                .body("upstream_calls.size()", equalTo(2) );
     }
 
     @SneakyThrows
@@ -71,6 +71,6 @@ public class ApiControllerIntegrationTest {
                 .body("uri",equalTo("/"))
                 .body("type", equalTo("HTTP"))
                 .body("$", hasKey("upstream_calls") )
-                .body("upstream_calls.size", equalTo(10) );
+                .body("upstream_calls.size()", equalTo(10) );
     }
 }
