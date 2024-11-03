@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import Timeline from './Timeline.js';
 import Advanced from './Advanced.js';
-import { BrowserRouter, Route, Switch, Link} from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Link} from 'react-router-dom';
 import {getDataApi} from "./Utility";
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import ClipLoader from "react-spinners/ClipLoader";
 
 import Navbar from 'react-bootstrap/Navbar';
@@ -51,7 +51,7 @@ export default function App(props){
     return (
         (loading) ? <ClipLoader loading={loading} size={150} css={override} /> :
             <div className="App">
-                <BrowserRouter basename="/ui">
+                <BrowserRouter path="/ui">
                     <Navbar bg="dark" variant="dark" sticky="top">
                         <Navbar.Brand><h1>{name} UI</h1></Navbar.Brand><Navbar.Toggle aria-controls="basic-navbar-nav"/>
                         <Navbar.Collapse id="basic-navbar-nav">
@@ -61,14 +61,10 @@ export default function App(props){
                             </Nav>
                         </Navbar.Collapse>
                     </Navbar>
-                    <Switch>
-                        <Route exact path="/">
-                            <Timeline url={url} refresh={refresh}/>
-                        </Route>
-                        <Route path="/advanced">
-                            <Advanced url={url}/>
-                        </Route>
-                    </Switch>
+                    <Routes>
+                        <Route exact path="/" element={<Timeline url={url} refresh={refresh}/>} />
+                        <Route path="/advanced" element={ <Advanced url={url}/>} />
+                    </Routes>
                 </BrowserRouter>
             </div>
 

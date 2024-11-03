@@ -1,5 +1,6 @@
 package com.acme.dummyservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import java.util.List;
 @Setter
 @Builder
 @ToString
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ResponseDTO {
 
     public enum ServiceType {

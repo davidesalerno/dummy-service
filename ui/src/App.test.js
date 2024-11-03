@@ -1,5 +1,5 @@
 import {render, screen, waitFor} from '@testing-library/react';
-import {act} from '@testing-library/react-hooks'
+import {act} from 'react';
 import axios from 'axios';
 import App from './App';
 

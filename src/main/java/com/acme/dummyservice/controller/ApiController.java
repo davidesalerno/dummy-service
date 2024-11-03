@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.net.SocketException;
 import java.util.Date;
 
@@ -54,7 +54,7 @@ public class ApiController {
                             schema = @Schema(implementation = ResponseDTO.class)) }),
             @ApiResponse(responseCode = "400", description = "Invalid input supplied",
                     content = @Content) })
-    @RequestMapping(value = {"/", "/{spring:\\b(?!(?:ui)\\b)\\w+}"})
+    @RequestMapping(value = { "/", "/{spring:\\b(?!(?:ui)\\b)\\w+}"})
     public ResponseDTO index(@RequestParam(name = "bulk", required = false, defaultValue = "1") Integer bulkCalls, HttpServletRequest request) throws SocketException {
         return responseService.buildIndexResponse(request.getRequestURI().substring(request.getContextPath().length()), ResponseDTO.builder().name(this.name).body(this.message).build(), upstreamService.call(upstreamUris, bulkCalls), networkService.getIPv4Addresses(), new Date());
     }
