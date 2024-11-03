@@ -1,13 +1,9 @@
 /* pact.fixtures.js */
-import { Matchers } from '@pact-foundation/pact';
-import * as Pact from "@pact-foundation/pact";
+import { MatchersV3 } from '@pact-foundation/pact';
 
 export const simpleRequest = {
-  uponReceiving: 'get simple response',
-  withRequest: {
     method: 'GET',
     path: '/'
-  },
 };
 
 export const simpleResponse = {
@@ -15,7 +11,7 @@ export const simpleResponse = {
   headers: {
     'Content-Type': 'application/json'
   },
-  body: Pact.Matchers.like({
+  body: MatchersV3.like({
     name: "api-1",
     uri: "/",
     type: "HTTP",

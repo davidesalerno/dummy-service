@@ -16,10 +16,12 @@ public class Either<L, R> {
         this.right = right;
     }
 
+    @SuppressWarnings("unchecked")
     public static <L,R> Either<L,R> Left( L value) {
         return new Either(value, null);
     }
 
+    @SuppressWarnings("unchecked")
     public static <L,R> Either<L,R> Right( R value) {
         return new Either(null, value);
     }

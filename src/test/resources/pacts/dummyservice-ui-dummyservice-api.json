@@ -2,74 +2,165 @@
   "consumer": {
     "name": "dummyservice-ui"
   },
-  "provider": {
-    "name": "dummyservice-api"
-  },
   "interactions": [
     {
-      "description": "get simple response",
-      "providerState": "dummy service simply works",
+      "description": "a request without parameters",
+      "providerStates": [
+        {
+          "name": "A simple request"
+        }
+      ],
       "request": {
         "method": "GET",
         "path": "/"
       },
       "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
         "body": {
-          "name": "api-1",
-          "uri": "/",
-          "type": "HTTP",
+          "body": "Hello World 1",
+          "code": 200,
+          "duration": 0,
+          "end_time": "2021-05-02T10:22:50.912933",
           "ip_addresses": [
             "172.20.0.2"
           ],
+          "name": "api-1",
           "start_time": "2021-05-02T10:22:50.906984",
-          "end_time": "2021-05-02T10:22:50.912933",
-          "duration": 0,
-          "body": "Hello World 1",
-          "code": 200,
+          "type": "HTTP",
           "upstream_calls": [
             {
-              "name": "api-1",
-              "uri": "/",
-              "type": "HTTP",
               "body": "Hello World 1",
-              "duration": 0,
               "code": 200,
-              "start_time": "2021-05-02T10:22:50.906+00:00",
+              "duration": 0,
               "end_time": "2021-05-02T10:22:50.912+00:00",
               "ip_addresses": [
                 "172.20.0.2"
-              ]
+              ],
+              "name": "api-1",
+              "start_time": "2021-05-02T10:22:50.906+00:00",
+              "type": "HTTP",
+              "uri": "/"
             },
             {
-              "name": "api-2",
-              "uri": "/",
-              "type": "HTTP",
               "body": "Hello World 2",
-              "duration": 0,
               "code": 200,
-              "start_time": "2021-05-02T10:22:50.906+00:00",
+              "duration": 0,
               "end_time": "2021-05-02T10:22:50.912+00:00",
               "ip_addresses": [
                 "172.20.0.2"
-              ]
+              ],
+              "name": "api-2",
+              "start_time": "2021-05-02T10:22:50.906+00:00",
+              "type": "HTTP",
+              "uri": "/"
             }
-          ]
+          ],
+          "uri": "/"
+        },
+        "headers": {
+          "Content-Type": "application/json"
         },
         "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
+          "body": {
+            "$": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "header": {},
+          "status": {}
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "get simple response",
+      "providerStates": [
+        {
+          "name": "dummy service simply works"
         }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/"
+      },
+      "response": {
+        "body": {
+          "body": "Hello World 1",
+          "code": 200,
+          "duration": 0,
+          "end_time": "2021-05-02T10:22:50.912933",
+          "ip_addresses": [
+            "172.20.0.2"
+          ],
+          "name": "api-1",
+          "start_time": "2021-05-02T10:22:50.906984",
+          "type": "HTTP",
+          "upstream_calls": [
+            {
+              "body": "Hello World 1",
+              "code": 200,
+              "duration": 0,
+              "end_time": "2021-05-02T10:22:50.912+00:00",
+              "ip_addresses": [
+                "172.20.0.2"
+              ],
+              "name": "api-1",
+              "start_time": "2021-05-02T10:22:50.906+00:00",
+              "type": "HTTP",
+              "uri": "/"
+            },
+            {
+              "body": "Hello World 2",
+              "code": 200,
+              "duration": 0,
+              "end_time": "2021-05-02T10:22:50.912+00:00",
+              "ip_addresses": [
+                "172.20.0.2"
+              ],
+              "name": "api-2",
+              "start_time": "2021-05-02T10:22:50.906+00:00",
+              "type": "HTTP",
+              "uri": "/"
+            }
+          ],
+          "uri": "/"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
       }
     }
   ],
   "metadata": {
+    "pact-js": {
+      "version": "13.1.4"
+    },
+    "pactRust": {
+      "ffi": "0.4.22",
+      "models": "1.2.3"
+    },
     "pactSpecification": {
-      "version": "2.0.0"
+      "version": "3.0.0"
     }
+  },
+  "provider": {
+    "name": "dummyservice-api"
   }
 }

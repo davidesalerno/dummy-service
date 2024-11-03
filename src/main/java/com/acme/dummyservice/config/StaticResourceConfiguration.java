@@ -22,9 +22,4 @@ public class StaticResourceConfiguration implements WebMvcConfigurer
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/ui").setViewName("forward:/ui/index.html");
     }
-
-    @Override
-    public void configurePathMatch(PathMatchConfigurer configurer) {
-        configurer.setUseTrailingSlashMatch(false);
-    }
 }
